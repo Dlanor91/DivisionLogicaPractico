@@ -198,7 +198,7 @@ public class IuConsola {
             System.out.println("No hay ingresados productos");
         } else {
             System.out.println("CodProd: " + prod.getCodigo() + ", Nombre: " + prod.getNombre() + ", Precio: $" + prod.getPrecio() + ", Stock Actual: " + prod.getUnidades());
-            ArrayList<Factura> clientesMasProductosBarato = controlClientes.clientesCompraronProductoMasBarato();
+            ArrayList<Factura> clientesMasProductosBarato = controlFacturas.clientesCompraronProductoMasBarato();
             if (clientesMasProductosBarato.isEmpty()) {
                 System.out.println("No hay clientes con el producto mas barato");
             } else {
