@@ -12,44 +12,43 @@ import java.util.ArrayList;
  * @author magda
  */
 public class ControlClientes {
-    
+
     private static ControlClientes instancia;
 
     private ArrayList<Cliente> clientes = new ArrayList();
-    
-    public static ControlClientes getInstancia(){
-        
-        if (instancia==null){
-            instancia =  new ControlClientes();
+
+    public static ControlClientes getInstancia() {
+
+        if (instancia == null) {
+            instancia = new ControlClientes();
         }
         return instancia;
     }
 
-    private ControlClientes(){
-        
+    private ControlClientes() {
+
     }
 
     public ArrayList<Cliente> getClientes() {
         return clientes;
     }
-    
-   
-    public ArrayList clientesNoCompraronProductoMenorPrecio(){
+
+    public ArrayList clientesNoCompraronProductoMenorPrecio() {
         Producto menor = ControlStock.getInstancia().getProductoMenorPrecio();
         ArrayList<Cliente> retorno = new ArrayList<Cliente>();
-        
-        for(Cliente c: clientes){
-            if ( !ControlFacturas.getInstancia().clienteComproProducto(c, menor)){
+
+        for (Cliente c : clientes) {
+            if (!ControlFacturas.getInstancia().clienteComproProducto(c, menor)) {
                 retorno.add(c);
             }
-            
+
         }
         return retorno;
-        
+
     }
 
-     public boolean existeCliente(Cliente c) {
-           /*boolean existe = false;
+    public boolean existeCliente(Cliente c) {
+        /*boolean existe = false;
            int pos=0;
            ArrayList<Cliente> lista = this.getClientes();
            while (pos<lista.size()&&!existe){
@@ -60,32 +59,48 @@ public class ControlClientes {
                pos++;
            }
            return existe;*/
-           return clientes.contains(c);
+        return clientes.contains(c);
     }
-     
-        
-    public boolean agregar(Cliente c){
+
+    public boolean agregar(Cliente c) {
         boolean ok = false;
-        if (c.validar() && !this.existeCliente(c)){
+        if (c.validar() && !this.existeCliente(c)) {
             clientes.add(c);
-            ok=true;
+            ok = true;
         }
-        
+
         return ok;
     }
 
     public Cliente buscarClienteCedula(String cedula) {
-        Cliente c = null;        
-            
-        for(Cliente uncliente:getClientes()){
-            if(uncliente.getCedula().equals(cedula)){
+        Cliente c = null;
+
+        for (Cliente uncliente : getClientes()) {
+            if (uncliente.getCedula().equals(cedula)) {
                 c = uncliente;
-                return c;                
+                return c;
             }
         }
-        
+
         return c;
-        
+
     }
-    
+
+    public ArrayList clientesCompraronProductoMasBarato() {
+        Producto masBarato = ControlStock.getInstancia().productoMasBarato();
+        ArrayList<Factura> clientesQueCompraron = new ArrayList<Factura>();
+
+        if (masBarato != null) {
+
+            for (Cliente c : clientes) {
+                Factura fact = ControlFacturas.getInstancia().clienteComproProductoMasBarato(c, masBarato);
+                if (fact != null) {
+                    clientesQueCompraron.add(fact);                    
+                }
+
+            }
+        }
+        return clientesQueCompraron;
+    }
+
 }

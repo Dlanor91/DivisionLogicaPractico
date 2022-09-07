@@ -52,5 +52,16 @@ public class ControlFacturas {
         }
       
         return ret;
-    }   
+    } 
+    
+    public Factura clienteComproProductoMasBarato(Cliente c, Producto p){
+        Factura fact = null;
+        for(Factura f: facturas){
+            if (f.getCliente().equals(c)&&f.tieneProducto(p)){
+                fact = f;
+            }
+        }
+      
+        return fact;
+    } 
 }

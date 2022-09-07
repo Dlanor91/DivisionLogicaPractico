@@ -16,7 +16,7 @@ public class DatosPrueba {
        
         ControlStock cs = ControlStock.getInstancia();
         
-        Proveedor pA = new Proveedor("Proveedor A");
+       Proveedor pA = new Proveedor("Proveedor A");
         Proveedor pB = new Proveedor("Proveedor B");
         Proveedor pC = new Proveedor("Proveedor C");
         

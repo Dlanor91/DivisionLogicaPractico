@@ -81,5 +81,17 @@ public class ControlStock {
            }
         return prod;
     }
+
+    public Producto productoMasBarato() {
+        Producto prod = null;
+        if(getProductos().size()!=0) prod = productos.get(0) ;
+        for(Producto p:getProductos()){
+           if(p.getPrecio() <prod.getPrecio()){
+               prod = p;
+           }
+        }
+        return prod;
+        
+    }
     
 }
