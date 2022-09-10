@@ -13,19 +13,9 @@ import java.util.ArrayList;
  */
 public class ControlClientes {
 
-    private static ControlClientes instancia;
-
     private ArrayList<Cliente> clientes = new ArrayList();
 
-    public static ControlClientes getInstancia() {
-
-        if (instancia == null) {
-            instancia = new ControlClientes();
-        }
-        return instancia;
-    }
-
-    private ControlClientes() {
+    ControlClientes() {
 
     }
 
@@ -34,14 +24,13 @@ public class ControlClientes {
     }
 
     public ArrayList clientesNoCompraronProductoMenorPrecio() {
-        Producto menor = ControlStock.getInstancia().getProductoMenorPrecio();
+        Producto menor = Fachada.getInstancia().getProductoMenorPrecio();
         ArrayList<Cliente> retorno = new ArrayList<Cliente>();
 
         for (Cliente c : clientes) {
-            if (!ControlFacturas.getInstancia().clienteComproProducto(c, menor)) {
+            if (!Fachada.getInstancia().clienteComproProducto(c, menor)) {
                 retorno.add(c);
             }
-
         }
         return retorno;
 
@@ -87,12 +76,12 @@ public class ControlClientes {
     }
 
     public ArrayList clientesCompraronProductoMasBarato() {
-        Producto masBarato = ControlStock.getInstancia().productoMasBarato();
+        Producto masBarato = Fachada.getInstancia().productoMasBarato();
         ArrayList<Cliente> clientesQueCompraron = new ArrayList<Cliente>();
 
         if (masBarato != null) {
             for (Cliente c : getClientes()) {
-                if (ControlFacturas.getInstancia().clienteComproProducto(c, masBarato)) {
+                if (Fachada.getInstancia().clienteComproProducto(c, masBarato)) {
                     clientesQueCompraron.add(c);
                 }
             }

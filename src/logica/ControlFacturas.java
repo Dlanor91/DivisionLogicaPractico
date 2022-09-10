@@ -14,19 +14,9 @@ import java.util.Date;
  */
 public class ControlFacturas {
 
-    private static ControlFacturas instancia;
-
     private ArrayList<Factura> facturas = new ArrayList();
-
-    public static ControlFacturas getInstancia() {
-
-        if (instancia == null) {
-            instancia = new ControlFacturas();
-        }
-        return instancia;
-    }
-
-    private ControlFacturas() {
+   
+    ControlFacturas() {
 
     }
 

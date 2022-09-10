@@ -10,13 +10,12 @@ import logica.Producto;
 import logica.Proveedor;
 import utilidades.Consola;
 import logica.ControlFacturas;
+import logica.Fachada;
 import logica.LineaFactura;
 
 public class IuConsola {
 
-    ControlClientes controlClientes = ControlClientes.getInstancia();
-    ControlStock controlStock = ControlStock.getInstancia();
-    ControlFacturas controlFacturas = ControlFacturas.getInstancia();
+   private Fachada logica = Fachada.getInstancia();
 
     /**
      * Ejecuta la consola
@@ -91,7 +90,7 @@ public class IuConsola {
         } while (!ok);
 
         unCliente.setNombre(Consola.leer("Nombre:"));
-        if (controlClientes.agregar(unCliente)) {
+        if (logica.agregar(unCliente)) {
             mostrarClientes();
         } else {
             System.out.println("EL CLIENTE NO FUE INGRESADO");
@@ -103,7 +102,7 @@ public class IuConsola {
         System.out.println("=================");
         System.out.println("CLIENTES ACTUALES");
         System.out.println("=================");
-        ArrayList<Cliente> clientes = controlClientes.getClientes();
+        ArrayList<Cliente> clientes = logica.getClientes();
         for (Cliente c : clientes) {
             System.out.println(c.getCedula() + " - " + c.getNombre());
         }
@@ -123,13 +122,13 @@ public class IuConsola {
 
         unProducto.setUnidades(Consola.leerInt("Numero: "));
 
-        ArrayList<Proveedor> proveedores = controlStock.getProveedores();
+        ArrayList<Proveedor> proveedores = logica.getProveedores();
         int pos = Consola.menu(proveedores);
         Proveedor p = proveedores.get(pos);
         unProducto.setProveedor(p);
 
         unProducto.setPrecio(Consola.leerInt("Precio: "));
-        if (controlStock.agregar(unProducto)) {
+        if (logica.agregar(unProducto)) {
 
             mostrarProductos();
         } else {
@@ -142,7 +141,7 @@ public class IuConsola {
         System.out.println("=================");
         System.out.println("PRODUCTOS ACTUALES");
         System.out.println("=================");
-        ArrayList<Producto> productos = controlStock.getProductos();
+        ArrayList<Producto> productos = logica.getProductos();
         for (Producto p : productos) {
             System.out.println(p.toString());
         }
@@ -153,7 +152,7 @@ public class IuConsola {
         System.out.println("===============");
         Factura unaFactura = new Factura();
 
-        Cliente existeCliente = controlClientes.buscarClienteCedula(Consola.leer("Cedula: "));
+        Cliente existeCliente = logica.buscarClienteCedula(Consola.leer("Cedula: "));
         if (existeCliente == null) {
             System.out.println("El cliente no existe.");
         } else {
@@ -162,7 +161,7 @@ public class IuConsola {
             do {
                 int codigo = Consola.leerInt("Digita el codigo: ");
                 int cantUnidades = Consola.leerInt("Digita la cantidad de Unidades: ");
-                Producto p = controlStock.buscarProdCod(codigo);
+                Producto p = logica.buscarProdCod(codigo);
                 if (p != null) {
                     if (unaFactura.agregarLinea(cantUnidades, p)) {
                         for (LineaFactura lf : unaFactura.getLineas()) {
@@ -186,7 +185,7 @@ public class IuConsola {
             String almacenar = Consola.leer("Desea almacenar la factura S/N: ");
 
             if (almacenar.equals("S") || almacenar.equals("s")) {
-                controlFacturas.agregar(unaFactura); //es una instancia de factura (unaFactura) no esta creada en el sistema
+                logica.agregar(unaFactura); //es una instancia de factura (unaFactura) no esta creada en el sistema
             }
         }
 
@@ -194,17 +193,17 @@ public class IuConsola {
 
     private void mostrarClientesProdMasBarato() {
         System.out.println("El producto más barato es:");
-        Producto prod = controlStock.productoMasBarato();
+        Producto prod = logica.productoMasBarato();
         if (prod == null) {
             System.out.println("No hay ingresados productos");
         } else {
             System.out.println("CodProd: " + prod.getCodigo() + ", Nombre: " + prod.getNombre() + ", Precio: $" + prod.getPrecio() + ", Stock Actual: " + prod.getUnidades());
-            ArrayList<Cliente> clientesCompraronProductoMasBarato = controlClientes.clientesCompraronProductoMasBarato();            
+            ArrayList<Cliente> clientesCompraronProductoMasBarato = logica.clientesCompraronProductoMasBarato();            
             if (clientesCompraronProductoMasBarato.isEmpty()) {
                 System.out.println("No hay clientes con el producto mas barato");
             } else {                
                 for (Cliente c : clientesCompraronProductoMasBarato) {
-                    System.out.println("Cedula: " + c.getCedula() + ", Nombre: " + c.getNombre() + ", Fecha Ultima Compra: " + ControlFacturas.getInstancia().ultimaCompraPorUsuario(c,prod).getFecha());
+                    System.out.println("Cedula: " + c.getCedula() + ", Nombre: " + c.getNombre() + ", Fecha Ultima Compra: " + logica.getInstancia().ultimaCompraPorUsuario(c,prod).getFecha());
                 }
             }
         }
