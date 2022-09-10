@@ -84,6 +84,20 @@ public class ControlClientes {
 
         return c;
 
-    }    
+    }
+
+    public ArrayList clientesCompraronProductoMasBarato() {
+        Producto masBarato = ControlStock.getInstancia().productoMasBarato();
+        ArrayList<Cliente> clientesQueCompraron = new ArrayList<Cliente>();
+
+        if (masBarato != null) {
+            for (Cliente c : getClientes()) {
+                if (ControlFacturas.getInstancia().clienteComproProducto(c, masBarato)) {
+                    clientesQueCompraron.add(c);
+                }
+            }
+        }
+        return clientesQueCompraron;
+    }
 
 }

@@ -157,6 +157,7 @@ public class IuConsola {
         if (existeCliente == null) {
             System.out.println("El cliente no existe.");
         } else {
+            unaFactura.setCliente(existeCliente);
             boolean ok = false;
             do {
                 int codigo = Consola.leerInt("Digita el codigo: ");
@@ -198,12 +199,12 @@ public class IuConsola {
             System.out.println("No hay ingresados productos");
         } else {
             System.out.println("CodProd: " + prod.getCodigo() + ", Nombre: " + prod.getNombre() + ", Precio: $" + prod.getPrecio() + ", Stock Actual: " + prod.getUnidades());
-            ArrayList<Factura> clientesMasProductosBarato = controlFacturas.clientesCompraronProductoMasBarato();
-            if (clientesMasProductosBarato.isEmpty()) {
+            ArrayList<Cliente> clientesCompraronProductoMasBarato = controlClientes.clientesCompraronProductoMasBarato();            
+            if (clientesCompraronProductoMasBarato.isEmpty()) {
                 System.out.println("No hay clientes con el producto mas barato");
-            } else {
-                for (Factura f : clientesMasProductosBarato) {
-                    System.out.println("Cedula: " + f.getCliente().getCedula() + ", Nombre: " + f.getCliente().getNombre() + ", Fecha Ultima Compra: " + f.getFecha());
+            } else {                
+                for (Cliente c : clientesCompraronProductoMasBarato) {
+                    System.out.println("Cedula: " + c.getCedula() + ", Nombre: " + c.getNombre() + ", Fecha Ultima Compra: " + ControlFacturas.getInstancia().ultimaCompraPorUsuario(c,prod).getFecha());
                 }
             }
         }

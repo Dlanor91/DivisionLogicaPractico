@@ -54,30 +54,20 @@ public class ControlFacturas {
         return ret;
     }
 
-    public Factura clienteComproProductoMasBarato(Cliente c, Producto p) {
-        Factura fact = null;
-        for (Factura f : facturas) {
-            if (f.getCliente().equals(c) && f.tieneProducto(p)) {
-                fact = f;
+    public Factura ultimaCompraPorUsuario(Cliente c, Producto prod) {
+
+        Factura f = null;
+        //usar un ciclo de atras adelante
+        for(int x=facturas.size()-1;x>=0;x--)
+        {
+            f =facturas.get(x);
+            if(f.getCliente()==c && f.tieneProducto(prod))
+            {
+                return f;
             }
+            
         }
+        return f;
 
-        return fact;
-    }
-
-    public ArrayList clientesCompraronProductoMasBarato() {
-        Producto masBarato = ControlStock.getInstancia().productoMasBarato();
-        ArrayList<Factura> clientesQueCompraron = new ArrayList<Factura>();
-        int posicion = 0;
-        if (masBarato != null) {
-
-            for (Cliente c : ControlClientes.getInstancia().getClientes()) {
-                Factura fact = clienteComproProductoMasBarato(c, masBarato);
-                if (fact != null) {
-                    clientesQueCompraron.add(fact);
-                }
-            }
-        }
-        return clientesQueCompraron;
     }
 }
